@@ -74,7 +74,11 @@ class Tag
             $this->products->removeElement($product);
             $product->removeTag($this);
         }
-
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->label;
     }
 }
