@@ -2,19 +2,19 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
 use App\Entity\Product;
 use App\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class ProductController extends AbstractController
 {
     /**
      * Affiche et traite le formulaire d'ajout d'un produit
-     * @Route("/produit/creation", methods={"GET", "POST"})
+     * @Route("/produit/gestion/creation", methods={"GET", "POST"})
      * @param Request $requestHTTP
      * @return Response
      */
@@ -74,24 +74,39 @@ class ProductController extends AbstractController
 
     /**
      * Affiche et traite le formulaire de modification d'un produit
-     * @Route("/produit/modification/{slug<[a-z0-9\-]+>}", methods={"GET", "POST"})
+     * @Route(
+     *     "/produit/gestion/modification/{slug<[a-z0-9\-]+>}",
+     *     methods={"GET", "POST"}, name="app_produit_modification"
+     * )
      * @param Request $requestHTTP
-     * @param Product $product
+     * @param UserInterface $user
      * @return Response
      */
-    public function update(Request $requestHTTP, Product $product): Response
+    public function update(Request $requestHTTP, UserInterface $user): Response
     {
+        if ($product->getPublisher() !== $user && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException("L'utilisateur courant ne peut modifier ce produit");
+        }
+
         // Récupération du formulaire
         $formProduct = $this->createForm(ProductType::class, $product);
+
         // On envoie les données postées au formulaire
         $formProduct->handleRequest($requestHTTP);
+
         // On vérifie que le formulaire est soumis et valide
         if ($formProduct->isSubmitted() && $formProduct->isValid()) {
+            //Permettre d'associer l'utilisateur connecté à la création d'un produit afin que
+            //l'utilisateur puisse modifier son produit
+            $product->setPublisher($user);
+
             // On sauvegarde le produit en BDD grâce au manager
             $manager = $this->getDoctrine()->getManager();
             $manager->flush();
+
             // Ajout d'un message flash
             $this->addFlash('warning', 'Le produit a bien été modifié');
+
             // Redirection
             return $this->redirectToRoute('app_product_index');
         }
@@ -102,7 +117,7 @@ class ProductController extends AbstractController
 
     /**
      * Suppression d'un produit
-     * @Route("/produit/suppression/{slug<[a-z0-9\-]+>}", methods={"GET", "POST"})
+     * @Route("/produit/suppression/{slug<[a-z0-9\-]+>}", methods={"GET", "POST"}, name="app_produit_suppression")
      * @param Product $product
      * @return Response
      */

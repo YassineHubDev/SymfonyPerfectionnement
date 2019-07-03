@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -35,6 +37,16 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="publisher")
+     */
+    private $no;
+
+    public function __construct()
+    {
+        $this->no = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -112,5 +124,36 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getNo(): Collection
+    {
+        return $this->no;
+    }
+
+    public function addNo(Product $no): self
+    {
+        if (!$this->no->contains($no)) {
+            $this->no[] = $no;
+            $no->setPublisher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNo(Product $no): self
+    {
+        if ($this->no->contains($no)) {
+            $this->no->removeElement($no);
+            // set the owning side to null (unless already changed)
+            if ($no->getPublisher() === $this) {
+                $no->setPublisher(null);
+            }
+        }
+
+        return $this;
     }
 }

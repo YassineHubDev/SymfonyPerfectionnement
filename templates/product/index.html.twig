@@ -13,8 +13,20 @@
                              alt="Image de {{ product.name }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ product.name }}</h5>
-                            <p class="card-text">{{ product.description | slice (0,100)}}</p>
-                            <a href="{{path('app_produit', {'slug' : product.slug}) }}" class="card-link btn btn-outline-info">Détail</a>
+                            <p class="card-text">{{ product.description | slice (0,100) }}</p>
+
+                            <div class="btn-group">
+                                <a href="{{ path('app_produit', {'slug' : product.slug}) }}"
+                                   class="card-link btn btn-outline-info">Détail</a>
+                                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                    <a href="{{ path('app_produit_modification', {'slug' : product.slug}) }}"
+                                       class="card-link btn btn-outline-info">Modification</a>
+                                {% endif %}
+                                {% if is_granted('ROLE_MODERATEUR') %}
+                                    <a href="{{ path('app_produit_suppression', {'slug' : product.slug}) }}"
+                                       class="card-link btn btn-outline-info">Suppression</a>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>

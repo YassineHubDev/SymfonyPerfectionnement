@@ -6,7 +6,7 @@ use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Query\AST\UpdateClause;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
@@ -89,6 +89,12 @@ class Product
      * @ORM\Column(type="string", length=128, nullable=false, unique=true)
      */
     private $slug;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="no")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $publisher;
 
     public function __construct()
     {
@@ -268,6 +274,18 @@ class Product
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getPublisher(): ?User
+    {
+        return $this->publisher;
+    }
+
+    public function setPublisher(?User $publisher): self
+    {
+        $this->publisher = $publisher;
 
         return $this;
     }

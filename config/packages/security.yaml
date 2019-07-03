@@ -1,35 +1,49 @@
 security:
-    encoders:
-        App\Entity\User:
-            algorithm: argon2i
+  encoders:
+    App\Entity\User:
+      algorithm: argon2i
 
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
-    providers:
-        # used to reload user from session & other features (e.g. switch_user)
-        app_user_provider:
-            entity:
-                class: App\Entity\User
-                property: email
-    firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        main:
-            logout:
-                path: app_logut
-            anonymous: true
-            guard:
-                authenticators:
-                    - App\Security\AppAuthAuthenticator
+  # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+  providers:
+    # used to reload user from session & other features (e.g. switch_user)
+    app_user_provider:
+      entity:
+        class: App\Entity\User
+        property: email
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+    main:
+      logout:
+        path: app_logout
+      anonymous: true
+      guard:
+        authenticators:
+          - App\Security\AppAuthAuthenticator
+      remember_me:
+        secret:  '%kernel.secret%'
+        # 24h
+        lifetime: 86400
 
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#firewalls-authentication
+      # activate different ways to authenticate
+      # https://symfony.com/doc/current/security.html#firewalls-authentication
 
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+      # https://symfony.com/doc/current/security/impersonating_user.html
+      # switch_user: true
 
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
-    access_control:
-        - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/profile, roles: ROLE_USER }
+  # Easy way to control access for large sections of your site
+  # Note: Only the *first* access control that matches will be used
+
+  #Hirarchie des rôles
+  role_hierarchy:
+    ROLE_MODERATEUR: ROLE_USER #LE MODERATEUR PEUT FAIRE TOUT CE QUE FAIT LE USER
+    ROLE_ADMIN: ROLE_MODERATEUR #L'ADMIN PEUT FAIRE TOUT CE QUE FAIT LE MODERATEUR ET LE USER
+    ROLE_SUPER_ADMIN: ROLE_ADMIN #LE SUPER ADMIN PEUT FAIRE TOUT CE QUE FAIT L'ADMIN, LE MODERATEUR ET LE USER
+
+  #Définition des droit d'accès
+  access_control:
+    - { path: ^/produit/gestion, roles: IS_AUTHENTICATED_FULLY}
+    - { path: ^/produit/suppression, roles: ROLE_MODERATEUR}
+    - { path: ^/admin, roles: ROLE_ADMIN }
+    - { path: ^/profile, roles: ROLE_USER }
