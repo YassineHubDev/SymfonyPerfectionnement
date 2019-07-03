@@ -1,0 +1,8 @@
+#list:
+#    path:/
+#   controller: App\Controller\AdminController::listUser
+
+
+#changerole:
+#    path: /changerole/{id<[0-9]+>}
+#    controller: App\Controller\AdminController::changerole
