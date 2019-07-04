@@ -74,7 +74,6 @@ class ProductController extends AbstractController
 
         // On vérifie que le formulaire est soumis et valide
         if ($formProduct->isSubmitted() && $formProduct->isValid()) {
-
             // On sauvegarde le produit en BDD grâce au manager
             $manager = $this->getDoctrine()->getManager();
             $manager->flush();
