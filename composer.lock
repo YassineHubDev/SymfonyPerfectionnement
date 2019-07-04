@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e61607db6e2f2b7752288120ba1ff97",
+    "content-hash": "2831d537368b5df6280bd8c47676b4fc",
     "packages": [
         {
             "name": "cocur/slugify",
@@ -5054,7 +5054,7 @@
         },
         {
             "name": "symfony/security-csrf",
-            "version": "v4.3.1",
+            "version": "v4.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-csrf.git",

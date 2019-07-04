@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Product
 {
@@ -102,6 +103,14 @@ class Product
 
         $this->nbViews = 0;
         $this->dateCreation = new \DateTime();
+    }
+
+    /**
+     * ORM\PrePersist()
+     */
+    public function initCreatedAt()
+    {
+        $this->cretedAt = new \DateTime();
     }
 
     /**
@@ -289,4 +298,33 @@ class Product
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -18,7 +18,7 @@ class ProductController extends AbstractController
      * @param Request $requestHTTP
      * @return Response
      */
-    public function create(Request $requestHTTP): Response
+    public function create(Request $requestHTTP, UserInterface $user): Response
     {
         //Récupération du formulaire
         $product = new Product();
@@ -29,6 +29,9 @@ class ProductController extends AbstractController
 
         //On vérifie que le formulaire est soumis et valide
         if ($formProduct->isSubmitted() && $formProduct->isValid()) {
+            // On attribue l'utilisateur connecté en tant que publicateur de ce nouvel article
+            $product->setPublisher($user);
+
             //On sauvegarde le pd en BDD grâce au manager
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($product);
@@ -41,31 +44,6 @@ class ProductController extends AbstractController
             //Redirection
             return $this->redirectToRoute('app_product_index');
         }
-
-        /*
-         * Récupération d'une catégorie
-        $category = $this->getDoctrine()
-            ->getRepository(Category::class)
-            ->find(1)
-            ;
-        //Création et remplissage du produit
-        $product = new Product();
-        $product
-            ->setName('ventila')
-            ->setDescription('Pour faire du froid')
-            ->setImageName('ventilo.jpg')
-            ->setEtatPublication(true)
-            ->setPrice(15.99)
-            ->setCategory($category)
-            ;
-        dump($product);
-        */
-
-        /* On sauvegarde le produit en BDD grâce au manager
-        $manager = $this->getDoctrine()->getManager();
-        $manager->persist($product);
-        $manager->flush();
-        */
 
         return $this->render('product/create.html.twig', [
             'formProduct' => $formProduct->createView()
@@ -96,9 +74,6 @@ class ProductController extends AbstractController
 
         // On vérifie que le formulaire est soumis et valide
         if ($formProduct->isSubmitted() && $formProduct->isValid()) {
-            //Permettre d'associer l'utilisateur connecté à la création d'un produit afin que
-            //l'utilisateur puisse modifier son produit
-            $product->setPublisher($user);
 
             // On sauvegarde le produit en BDD grâce au manager
             $manager = $this->getDoctrine()->getManager();

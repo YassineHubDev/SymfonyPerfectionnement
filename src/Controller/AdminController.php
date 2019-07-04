@@ -52,13 +52,10 @@ class AdminController extends AbstractController
 
             $this->addFlash('warning', 'Utilisateur modifié avec succés !');
             return $this->redirectToRoute('app_user');
-
-
         }
         return $this->render('updateuserregister/update.html.twig', [
             'updateForm' => $form->createView()
 
         ]);
     }
-
 }

@@ -23,7 +23,7 @@ security:
           - App\Security\AppAuthAuthenticator
       remember_me:
         secret:  '%kernel.secret%'
-        # 24h
+        #24h
         lifetime: 86400
 
       # activate different ways to authenticate
