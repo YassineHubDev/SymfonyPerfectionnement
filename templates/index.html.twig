@@ -1,7 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Bonjour et bienvenue sur votre 1er site en PHP</h1>
+    <h1>Page d'accueil</h1>
 
+    {% include 'product/list.html.twig' with {products : paginateResults} %}
+
+    <div class="navigation">
+        {{ knp_pagination_render(paginateResults) }}
+    </div>
 
 {% endblock %}
