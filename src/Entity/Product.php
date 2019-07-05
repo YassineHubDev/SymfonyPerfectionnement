@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
- * @ORM\HasLifecycleCallbacks()
+ * @ORM\HasLifecycleCallbacks
  * @Vich\Uploadable
  */
 class Product
@@ -122,7 +122,7 @@ class Product
     public function setImageFile(?File $imageFile = null): void
     {
         if (!is_null($imageFile)) {
-            $this->updatedAt = new \DateTimeImmutable();
+            $this->dateModification = new \DateTimeImmutable();
         }
         $this->imageFile = $imageFile;
     }
@@ -136,11 +136,28 @@ class Product
     }
 
     /**
-     * ORM\PrePersist()
+     * @ORM\PreFlush
      */
     public function initCreatedAt()
     {
-        $this->cretedAt = new \DateTime();
+
+        $this->dateCreation = new \DateTime();
+        $this->updateSlug();
+    }
+    /**
+     * @ORM\PrePersist()
+     */
+    public function ffff()
+    {
+        $this->dateCreation = new \DateTime();
+        $this->updateSlug();
+    }
+    /**
+     * ORM\PreUpdate
+     */
+    public function refresh()
+    {
+        $this->dateModification = new \DateTime();
     }
 
     /**
@@ -172,6 +189,7 @@ class Product
 
     public function setName(string $name): self
     {
+
         $this->name = $name;
         $this->updateSlug();
 
@@ -255,7 +273,7 @@ class Product
         return $this->imageName;
     }
 
-    public function setImageName(string $imageName): self
+    public function setImageName(?string $imageName = null): self
     {
         $this->imageName = $imageName;
 

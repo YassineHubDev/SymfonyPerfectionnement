@@ -1,10 +1,27 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1>^p^pdâd</h1>
+    <h1>Formulaire de modification</h1>
+
+    {{ form_start(formProduct) }}
+    {{ form_row(formProduct.name) }}
+    {{ form_row(formProduct.Description) }}
+    {{ form_row(formProduct.Price) }}
+    {{ form_row(formProduct.etatPublication) }}
+    {{ form_row(formProduct.imageFile) }}
+    {{ form_row(formProduct.category) }}
+
+    <ul class="tags" data-prototype="{{ form_widget(formProduct.tags.vars.prototype)|e('html_attr') }}">>
+        {% for tag in formProduct.tags %}
+            <li>{{ form_row(tag.label) }}</li>
+        {% endfor %}
+    </ul>
+
+    <input type="submit" value="Modifier" class="btn btn-warning">
+    {{ form_end(formProduct) }}
 {% endblock %}
 
-{% block title %}
-
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/product_tag_form.js') }}"></script>
 {% endblock %}
-

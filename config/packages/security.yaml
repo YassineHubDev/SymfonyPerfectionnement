@@ -43,7 +43,7 @@ security:
 
   #Définition des droit d'accès
   access_control:
-    - { path: ^/produit/gestion, roles: IS_AUTHENTICATED_FULLY}
-    - { path: ^/produit/suppression, roles: ROLE_MODERATEUR}
-    - { path: ^/admin, roles: ROLE_ADMIN }
-    - { path: ^/profile, roles: ROLE_USER }
+#    - { path: ^/produit/gestion, roles: IS_AUTHENTICATED_FULLY}
+#    - { path: ^/produit/suppression, roles: ROLE_MODERATEUR}
+#    - { path: ^/admin, roles: ROLE_ADMIN }
+#    - { path: ^/profile, roles: ROLE_USER }

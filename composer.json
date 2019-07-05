@@ -9,6 +9,7 @@
         "doctrine/annotations": "^1.6",
         "doctrine/orm": "^2.6",
         "easycorp/easyadmin-bundle": "^2.2",
+        "fzaninotto/faker": "^1.8",
         "sensio/framework-extra-bundle": "^5.3",
         "squizlabs/php_codesniffer": "^3.4",
         "symfony/apache-pack": "^1.0",
@@ -40,6 +41,7 @@
         "vich/uploader-bundle": "^1.9"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.2",
         "symfony/debug-pack": "*",
         "symfony/test-pack": "*",
         "symfony/web-server-bundle": "4.3.*"

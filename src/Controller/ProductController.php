@@ -60,7 +60,7 @@ class ProductController extends AbstractController
      * @param UserInterface $user
      * @return Response
      */
-    public function update(Request $requestHTTP, UserInterface $user): Response
+    public function update(Request $requestHTTP, UserInterface $user, Product $product): Response
     {
         if ($product->getPublisher() !== $user && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException("L'utilisateur courant ne peut modifier ce produit");
